@@ -18,28 +18,33 @@
     };
   };
 
-  outputs = { self, nix-darwin, nixpkgs, home-manager }: {
-    darwinConfigurations."smol" = nix-darwin.lib.darwinSystem {
-      system = "aarch64-darwin";
-      modules = [
-        # System config from separate files
-        ./darwin-configuration.nix
+  outputs =
+    {
+      self,
+      nix-darwin,
+      nixpkgs,
+      home-manager,
+    }:
+    {
+      darwinConfigurations."smol" = nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          # System config from separate files
+          # ./darwin-configuration.nix # old config
+          ./hosts/darwin # new config
 
-        # ./hosts/darwin/default.nix
-
-        # Home-manager configuration
-        home-manager.darwinModules.home-manager
-        {
-          users.users.dims.home = "/Users/dims";
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            # users.dims = import ./modules/home-manager/default.nix;
-            users.dims = import ./home.nix;
-          };
-        }
-      ];
+          # Home-manager configuration
+          home-manager.darwinModules.home-manager
+          {
+            users.users.dims.home = "/Users/dims";
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              # users.dims = import ./home.nix; # old config
+              users.dims = import ./home/dims.nix; # new config
+            };
+          }
+        ];
+      };
     };
-  };
 }
-

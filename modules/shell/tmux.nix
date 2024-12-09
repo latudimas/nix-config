@@ -1,0 +1,54 @@
+{ pkgs, ... }:
+{
+  programs.tmux = {
+    enable = true;
+    shell = "${pkgs.zsh}/bin/zsh";
+    terminal = "screen-256color";
+    escapeTime = 0;
+    baseIndex = 1;
+    keyMode = "vi";
+    customPaneNavigationAndResize = true;
+    historyLimit = 10000;
+
+    # Tmux settings
+    extraConfig = ''
+      # Enable mouse support
+      # set -g mouse on
+
+      # Better colors
+      set -ga terminal-overrides ",*256col*:Tc"
+
+      # Rebind prefix to C-a
+      unbind C-b
+      set -g prefix C-a
+      bind C-a send-prefix
+
+      # Split panes using | and -
+      bind | split-window -h -c "#{pane_current_path}"
+      bind - split-window -v -c "#{pane_current_path}"
+
+      # Pane resize using vim motion
+      bind -r h resize-pane -L 5
+      bind -r j resize-pane -D 5
+      bind -r k resize-pane -U 5
+      bind -r l resize-pane -R 5
+
+      # Reload config
+      bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
+
+      # Status bar customization
+      set -g status-style bg=default
+      set -g status-left "#[fg=blue]#S #[fg=white]| "
+      set -g status-right "#[fg=yellow]%H:%M #[fg=white]| #[fg=blue]#H"
+
+      # Window status
+      setw -g window-status-current-style fg=green,bold
+      setw -g window-status-style fg=white
+    '';
+
+    # Tmux Plugins 
+    plugins = with pkgs; [
+      tmuxPlugins.vim-tmux-navigator
+    ];
+  };
+}
