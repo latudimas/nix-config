@@ -1,9 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    enableAutosuggestions = true;
+    # enableAutosuggestions = true; # old config
+    autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
     # Initialize zsh with extra settings
@@ -62,7 +63,7 @@
         greeting=$(get_greeting)
         echo ""
         echo "╭─────────────────────────────╮"
-        echo "│  $greeting, $USER!  │"
+        echo "│    $greeting, $USER! 👻   │"
         echo "╰─────────────────────────────╯"
         echo ""
       }
@@ -94,7 +95,7 @@
     ];
 
     # Shell aliases
-    shellAliases = {
+    shellAliases = lib.mkForce {
       # Navigation
       ".." = "cd ..";
       "..." = "cd ../..";
@@ -114,19 +115,19 @@
       # gl = "git pull";
 
       # Git shortcuts -- Manually generated
-      ga = "add";
-      gaa = "add --all";
-      gc = "commit -v";
-      gcam = "commit -a -m";
-      gco = "checkout";
-      gcb = "checkout -b";
-      gf = "fetch";
-      gp = "push";
-      gl = "pull";
+      ga = "git add";
+      gaa = "gi tadd --all";
+      gc = "git commit -v";
+      gcam = "git commit -a -m";
+      gco = "git checkout";
+      gcb = "git checkout -b";
+      gf = "git fetch";
+      gp = "git push";
+      gl = "git pull";
 
       # System
-      # cat = "bat";              # Replace cat with bat
-      # vim = "nvim";             # Use neovim
+      cat = "bat";              # Replace cat with bat
+      vim = "nvim";             # Use neovim
 
       # Nix shortcuts
       nb = "nix build";
