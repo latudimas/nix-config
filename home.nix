@@ -1,3 +1,4 @@
+# NOTE: Not used anymore, moved to modules/...
 { pkgs, ... }:
 {
   programs.home-manager.enable = true;

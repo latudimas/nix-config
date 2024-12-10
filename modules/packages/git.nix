@@ -40,19 +40,19 @@
   };
 
   # Configure GitHub CLI
-  # programs.gh = {
-  #   enable = true;
-  #   settings = {
-  #     # gh config settings
-  #     git_protocol = "ssh";
-  #     editor = "nvim";
-  #     prompt = "enabled";
-  #
-  #     # Optional: Configure aliases for gh commands
-  #     aliases = {
-  #       co = "pr checkout";
-  #       pv = "pr view";
-  #     };
-  #   };
-  # };
+  programs.gh = {
+    enable = true;
+    settings = {
+      # gh config settings
+      git_protocol = "ssh";
+      editor = "nvim";
+      prompt = "enabled";
+
+      # Optional: Configure aliases for gh commands
+      aliases = {
+        co = "pr checkout";
+        pv = "pr view";
+      };
+    };
+  };
 }

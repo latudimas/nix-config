@@ -116,7 +116,8 @@
 
       # Git shortcuts -- Manually generated
       ga = "git add";
-      gaa = "gi tadd --all";
+      gaa = "git add --all";
+      gs = "git status";
       gc = "git commit -v";
       gcam = "git commit -a -m";
       gco = "git checkout";
@@ -136,7 +137,7 @@
       nf = "nix flake";
 
       # Darwin shortcuts
-      drsf = "darwin-rebuild switch --flake";
+      drf = "darwin-rebuild switch --flake";
 
       # Development
       # d = "docker";

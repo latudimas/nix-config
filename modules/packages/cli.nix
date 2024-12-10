@@ -10,6 +10,7 @@
     fd
     fzf
     ripgrep
+    lazygit
   ];
 
   programs.zoxide = {

@@ -1,3 +1,4 @@
+# NOTE: Not used anymore - moved into hosts/darwin
 { pkgs, ... }:
 {
   # System-level packages
