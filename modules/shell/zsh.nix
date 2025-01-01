@@ -27,7 +27,7 @@
 
       
       # ======================================
-      # Additional zsh settings
+      # Additional zsh setting
       # ====================================== 
       # setopt AUTO_CD              # cd by just typing directory name
       setopt EXTENDED_HISTORY     # Add timestamps to history
@@ -40,7 +40,7 @@
       # ======================================
       # CLI tools extra setup
       # ====================================== 
-      source <(fzf --zsh)
+      source <(fzf --zsh) #fzf
 
 
       # ======================================
@@ -58,16 +58,29 @@
         fi
       }
 
-      # print_welcome function
+      # Function to print the welcome message
       function print_welcome() {
         greeting=$(get_greeting)
-        echo ""
-        echo "╭─────────────────────────────╮"
-        echo "│    $greeting, $USER! 👻   │"
-        echo "╰─────────────────────────────╯"
-        echo ""
-      }
+        message="$greeting, $USER! 👻"
 
+        # Define box width
+        box_width=40
+        box_width_padding=36      # workaround for fixing upper and bottom bracket mismatch length
+        message_length=$(echo -n "$message" | wc -c)
+
+        # Calculate padding
+        total_padding=$((box_width - message_length - 2))
+        left_padding=$((total_padding / 2))
+        right_padding=$((total_padding - left_padding ))
+
+        # Generate the box
+        echo ""
+        printf "╭%s╮\n" "$(printf "─%.0s" $(seq 1 $box_width_padding))"
+        printf "│%*s%s%*s│\n" "$left_padding" "" "$message" "$right_padding" ""
+        printf "╰%s╯\n" "$(printf "─%.0s" $(seq 1 $box_width_padding))"
+      }
+      
+      #Call the function
       print_welcome
     '';
 
@@ -103,16 +116,8 @@
       # List directories
       ls = "eza"; # Replace ls with eza
       ll = "eza -l --icons"; # List in long format
-      la = "eza -la"; # List all files
+      la = "eza -la --icons"; # List all files
       lt = "eza -T"; # Tree view
-
-      # Git shortcuts -- Claude generated
-      # g = "git";
-      # gs = "git status";
-      # ga = "git add";
-      # gc = "git commit";
-      # gp = "git push";
-      # gl = "git pull";
 
       # Git shortcuts -- Manually generated
       ga = "git add";
