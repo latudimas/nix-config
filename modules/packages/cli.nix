@@ -11,6 +11,8 @@
     fzf
     ripgrep
     lazygit
+    mkcert #for local development certificate
+    rar # rar archives utilities
   ];
 
   programs.zoxide = {
