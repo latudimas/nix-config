@@ -8,7 +8,7 @@
     syntaxHighlighting.enable = true;
 
     # Initialize zsh with extra settings
-    initExtra = ''
+    initContent = ''
       # ======================================
       # Enable Vi mode
       # ====================================== 
