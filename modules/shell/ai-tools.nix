@@ -4,7 +4,7 @@
   home.packages = with pkgs; [
     claude-code
     opencode
-    gemini
+    gemini-cli
   ];
 
   # Environment variables for Claude Code
