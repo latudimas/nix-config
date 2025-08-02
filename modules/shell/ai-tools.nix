@@ -3,7 +3,6 @@
   # install from nixpkgs
   home.packages = with pkgs; [
     claude-code
-    opencode
     gemini-cli
   ];
 
