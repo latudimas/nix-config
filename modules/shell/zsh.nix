@@ -41,6 +41,9 @@
       # CLI tools extra setup
       # ====================================== 
       source <(fzf --zsh) #fzf
+      
+      #opencode
+      export PATH=/Users/dims/.opencode/bin:$PATH
 
 
       # ======================================
