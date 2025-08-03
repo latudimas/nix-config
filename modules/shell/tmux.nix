@@ -18,11 +18,13 @@
       # Better colors
       set -ga terminal-overrides ",*256col*:Tc"
 
-      # Rebind prefix to C-a
-      unbind C-b
-      set -g prefix C-a
-      bind C-a send-prefix
+      # Vi Mode enter: C-[
+      # Vi mode selection and copy
+      bind-key -T copy-mode-vi v send-keys -X begin-selection
+      bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+      # Notes: for paste, use C-]
 
+      
       # Split panes using | and -
       bind | split-window -h -c "#{pane_current_path}"
       bind - split-window -v -c "#{pane_current_path}"
