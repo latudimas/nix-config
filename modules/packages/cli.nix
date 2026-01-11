@@ -13,6 +13,8 @@
     lazygit
     mkcert #for local development certificate
     rar # rar archives utilities
+
+    devenv #development environment for local dev setup
   ];
 
   programs.zoxide = {

@@ -9,8 +9,8 @@
   # Configure Git
   programs.git = {
     enable = true;
-    userName = "latudimas";
-    userEmail = "riswandha.ld@gmail.com";
+    settings.user.name = "latudimas";
+    settings.user.email = "riswandha.ld@gmail.com";
 
     # Enable useful Git features
     lfs.enable = true;
@@ -20,7 +20,7 @@
       ".direnv"
     ];
 
-    extraConfig = {
+    settings = {
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
@@ -28,7 +28,7 @@
     };
 
     # Optional: Add Git aliases
-    aliases = {
+    settings.alias = {
       st = "status";
       co = "checkout";
       br = "branch";
