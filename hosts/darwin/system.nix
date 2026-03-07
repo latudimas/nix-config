@@ -14,4 +14,10 @@
     "nix-command"
     "flakes"
   ];
+
+  # Allow devenv/cachix to manage binary caches
+  nix.settings.trusted-users = [
+    "root"
+    "dims"
+  ];
 }
