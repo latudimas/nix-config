@@ -15,8 +15,9 @@
       # Enable mouse support
       set -g mouse on
 
-      # setup shift+enter inside tmux
-      bind -n S-Enter send-keys Escape "[13;2u"
+      # Extended keys support (for Shift+Enter in Claude Code, OpenCode, etc.)
+      set -s extended-keys always
+      set -as terminal-features 'xterm*:extkeys'
 
       # Better colors
       set -ga terminal-overrides ",*256col*:Tc"
