@@ -13,7 +13,7 @@
     # Tmux settings
     extraConfig = ''
       # Enable mouse support
-      # set -g mouse on
+      set -g mouse on
 
       # Better colors
       set -ga terminal-overrides ",*256col*:Tc"
