@@ -15,6 +15,9 @@
       # Enable mouse support
       set -g mouse on
 
+      # setup shift+enter inside tmux
+      bind -n S-Enter send-keys Escape "[13;2u"
+
       # Better colors
       set -ga terminal-overrides ",*256col*:Tc"
 
