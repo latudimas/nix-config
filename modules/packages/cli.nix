@@ -22,9 +22,9 @@
     
     # setup shell integration in nix way
     # commonly we need to use : eval "$(zoxide init zsh)" 
-    enableZshIntegration = true;
+    # enableZshIntegration = true;  # Commented out: replaced by nushell
     enableBashIntegration = true;
-    enableFishIntegration = true;
+    # enableFishIntegration = true;  # Commented out: not used
     enableNushellIntegration = true;
   };
 }
