@@ -2,8 +2,8 @@
 {
   programs.tmux = {
     enable = true;
-    # shell = "${pkgs.zsh}/bin/zsh";  # Commented out: replaced by nushell
-    shell = "${pkgs.nushell}/bin/nu";
+    shell = "${pkgs.zsh}/bin/zsh";
+    # shell = "${pkgs.nushell}/bin/nu";
     terminal = "screen-256color";
     escapeTime = 0;
     baseIndex = 1;

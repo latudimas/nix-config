@@ -21,7 +21,7 @@
     "dims"
   ];
 
-  # Set nushell as default shell
-  environment.shells = [ pkgs.nushell ];
-  users.users.dims.shell = pkgs.nushell;
+  # Set zsh as default shell
+  environment.shells = [ pkgs.zsh ];
+  users.users.dims.shell = pkgs.zsh;
 }

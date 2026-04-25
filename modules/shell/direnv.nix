@@ -3,8 +3,8 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
-    # enableZshIntegration = true;  # Commented out: replaced by nushell
-    enableNushellIntegration = true;
+    enableZshIntegration = true;
+    # enableNushellIntegration = true;
 
     # stdlib = ''
     #   # Layout for Python projects

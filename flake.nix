@@ -40,6 +40,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
+              backupFileExtension = "hm-backup";
               # users.dims = import ./home.nix; # old config
               users.dims = import ./home/dims.nix; # new config
             };
