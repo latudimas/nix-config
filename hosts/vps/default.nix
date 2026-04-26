@@ -9,6 +9,7 @@
   home.packages = with pkgs; [
     neovim
   ];
+  home.username = "dims";
   home.stateVersion = "24.11";
   home.homeDirectory = "/home/dims";
 
