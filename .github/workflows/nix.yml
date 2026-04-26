@@ -24,7 +24,7 @@ jobs:
         run: nix flake check --no-build
 
   # Full build + cache on push to main
-  build:
+  build-linux:
     if: github.event_name == 'push'
     runs-on: ubuntu-24.04
     steps:
