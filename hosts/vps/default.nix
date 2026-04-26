@@ -1,11 +1,13 @@
 { pkgs, ... }:
 {
+  imports = [
+    ../../modules/packages/git.nix
+    ../../modules/packages/cli.nix
+    ../../modules/shell/zsh.nix
+  ];
+
   home.packages = with pkgs; [
     neovim
-    zsh
-    ripgrep
-    git
-    curl
   ];
   home.stateVersion = "24.11";
   home.homeDirectory = "/home/dims";
