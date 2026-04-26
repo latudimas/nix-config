@@ -94,7 +94,7 @@ A script in the repo handles both layers at once for a fresh Linux machine.
 See `scripts/setup-linux.sh` — run it once after cloning the repo:
 
 ```bash
-bash ~/.config/nix-darwin/scripts/setup-linux.sh
+bash ~/.config/nix-config/scripts/setup-linux.sh
 ```
 
 After that, all substituter config lives declaratively in the nix config.

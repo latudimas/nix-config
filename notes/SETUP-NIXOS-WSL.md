@@ -155,8 +155,8 @@ Replace `hosts/dims-work/default.nix` with a proper NixOS system config:
 ```bash
 # Inside NixOS-WSL
 mkdir -p ~/.config
-git clone https://github.com/<your-repo>/nix-darwin ~/.config/nix-darwin
-cd ~/.config/nix-darwin
+git clone https://github.com/<your-repo>/nix-darwin ~/.config/nix-config
+cd ~/.config/nix-config
 ```
 
 ---
@@ -187,13 +187,13 @@ wsl --set-default NixOS
 
 After making changes to the config:
 ```bash
-cd ~/.config/nix-darwin
+cd ~/.config/nix-config
 sudo nixos-rebuild switch --flake .#dims-work
 ```
 
 Or using the `drf` alias equivalent — you can add a Linux alias in `zsh.nix`:
 ```nix
-nrs = "sudo nixos-rebuild switch --flake ~/.config/nix-darwin";
+nrs = "sudo nixos-rebuild switch --flake ~/.config/nix-config";
 ```
 
 ---

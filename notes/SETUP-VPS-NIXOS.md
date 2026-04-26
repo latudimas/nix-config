@@ -154,7 +154,7 @@ Replace `hosts/vps/default.nix` with a proper NixOS system config:
 ## Step 2: Commit the Config Changes
 
 ```bash
-cd ~/.config/nix-darwin
+cd ~/.config/nix-config
 git add .
 git commit -m "feat: add nixos vps configuration"
 ```
@@ -199,7 +199,7 @@ ssh-keygen -R <vps-ip>
 
 If you want to apply updates directly from the VPS:
 ```bash
-git clone https://github.com/<your-repo>/nix-darwin ~/.config/nix-darwin
+git clone https://github.com/<your-repo>/nix-darwin ~/.config/nix-config
 ```
 
 ---
@@ -214,7 +214,7 @@ nixos-rebuild switch --flake .#vps --target-host dims@<vps-ip> --use-remote-sudo
 
 ### From inside the VPS:
 ```bash
-cd ~/.config/nix-darwin
+cd ~/.config/nix-config
 sudo nixos-rebuild switch --flake .#vps
 ```
 

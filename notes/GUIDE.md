@@ -25,8 +25,8 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 
 **2. Clone the repo**
 ```bash
-git clone https://github.com/latudimas/nix-config ~/.config/nix-darwin
-cd ~/.config/nix-darwin
+git clone https://github.com/latudimas/nix-config ~/.config/nix-config
+cd ~/.config/nix-config
 ```
 
 **3. Install nix-darwin**
@@ -38,9 +38,9 @@ nix run nix-darwin -- switch --flake .#smol
 
 **4. Apply config**
 ```bash
-darwin-rebuild switch --flake ~/.config/nix-darwin
+darwin-rebuild switch --flake ~/.config/nix-config
 # or using the alias (after step 3 completes):
-drf ~/.config/nix-darwin
+drf ~/.config/nix-config
 ```
 
 ---
@@ -56,8 +56,8 @@ Restart the shell after installation.
 
 **2. Clone the repo**
 ```bash
-git clone https://github.com/latudimas/nix-config ~/.config/nix-darwin
-cd ~/.config/nix-darwin
+git clone https://github.com/latudimas/nix-config ~/.config/nix-config
+cd ~/.config/nix-config
 ```
 
 **3. Run the one-time Linux setup script**
@@ -75,7 +75,7 @@ nix run home-manager -- switch --flake .#dims-work
 
 > After first run, `home-manager` is available directly:
 ```bash
-home-manager switch --flake ~/.config/nix-darwin#dims-work
+home-manager switch --flake ~/.config/nix-config#dims-work
 ```
 
 ---
@@ -91,8 +91,8 @@ Restart the shell after installation.
 
 **2. Clone the repo**
 ```bash
-git clone https://github.com/latudimas/nix-config ~/.config/nix-darwin
-cd ~/.config/nix-darwin
+git clone https://github.com/latudimas/nix-config ~/.config/nix-config
+cd ~/.config/nix-config
 ```
 
 **3. Run the one-time Linux setup script**
@@ -107,7 +107,7 @@ nix run home-manager -- switch --flake .#vps
 
 > After first run:
 ```bash
-home-manager switch --flake ~/.config/nix-darwin#vps
+home-manager switch --flake ~/.config/nix-config#vps
 ```
 
 ---
@@ -118,18 +118,18 @@ After editing any file in this repo, apply the changes with:
 
 | Device | Command | Short alias |
 |---|---|---|
-| `smol` | `darwin-rebuild switch --flake ~/.config/nix-darwin` | `drf ~/.config/nix-darwin` |
-| `dims-work` | `home-manager switch --flake ~/.config/nix-darwin#dims-work` | — |
-| `vps` | `home-manager switch --flake ~/.config/nix-darwin#vps` | — |
+| `smol` | `darwin-rebuild switch --flake ~/.config/nix-config` | `drf ~/.config/nix-config` |
+| `dims-work` | `home-manager switch --flake ~/.config/nix-config#dims-work` | — |
+| `vps` | `home-manager switch --flake ~/.config/nix-config#vps` | — |
 
 > Always `cd` into the repo or provide the full path to the flake.
 
 ### Internet Toggle (smol only)
 
 ```bash
-drf ~/.config/nix-darwin           # normal — uses Cachix (fastest)
-drf-fast ~/.config/nix-darwin      # try cache, fall back to local build if slow
-drf-off ~/.config/nix-darwin       # skip all caches, build 100% locally
+drf ~/.config/nix-config           # normal — uses Cachix (fastest)
+drf-fast ~/.config/nix-config      # try cache, fall back to local build if slow
+drf-off ~/.config/nix-config       # skip all caches, build 100% locally
 ```
 
 See `notes/OFFLINE-BUILD.md` for details.
@@ -144,7 +144,7 @@ nixpkgs commit so packages get their newest versions.
 
 ### Update all flake inputs
 ```bash
-cd ~/.config/nix-darwin
+cd ~/.config/nix-config
 nix flake update
 ```
 
