@@ -12,7 +12,7 @@ This will **permanently delete** all Nix configurations, packages, and data. Pro
 
 ```bash
 # Backup your current configuration
-cp -r ~/.config/nix-darwin ~/nix-darwin-backup-$(date +%Y%m%d)
+cp -r ~/.config/nix-config ~/nix-config-backup-$(date +%Y%m%d)
 cp -r ~/.nix-profile ~/nix-profile-backup-$(date +%Y%m%d)
 
 # Backup any custom configurations
@@ -110,8 +110,8 @@ nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
 ./result/bin/darwin-installer
 
 # Clone fresh configuration (if you have a repo)
-git clone <your-repo-url> ~/.config/nix-darwin
-cd ~/.config/nix-darwin
+git clone <your-repo-url> ~/.config/nix-config
+cd ~/.config/nix-config
 
 # Update to use 25.05
 # Edit flake.nix to use:
@@ -132,7 +132,7 @@ home-manager --version
 darwin-rebuild --help
 
 # Check state version
-grep "stateVersion" ~/.config/nix-darwin/home/dims.nix
+grep "stateVersion" ~/.config/nix-config/home/dims.nix
 ```
 
 ## Troubleshooting
@@ -172,7 +172,7 @@ After fresh installation:
 If you need to restore your old configuration:
 ```bash
 # Restore from backup
-cp -r ~/nix-darwin-backup-*/ ~/.config/nix-darwin/
-cd ~/.config/nix-darwin
+cp -r ~/nix-config-backup-*/ ~/.config/nix-config/
+cd ~/.config/nix-config
 darwin-rebuild switch --flake .
 ```

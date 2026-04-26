@@ -1,0 +1,64 @@
+name: Build & Cache
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Dry run on PRs — evaluates all flake outputs without building
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v22
+
+      - name: Flake check (no build)
+        run: nix flake check --no-build
+
+  # Full build + cache on push to main
+  build-linux:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v22
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+
+      - uses: cachix/cachix-action@v15
+        with:
+          name: dims-nix
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build Linux hosts
+        run: |
+          nix build .#homeConfigurations.dims-work.activationPackage --no-link
+          nix build .#homeConfigurations.vps.activationPackage --no-link
+
+  build-macos:
+    if: github.event_name == 'push'
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v22
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v13
+
+      - uses: cachix/cachix-action@v15
+        with:
+          name: dims-nix
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build macOS host
+        run: |
+          nix build .#darwinConfigurations.smol.system --no-link

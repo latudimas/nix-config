@@ -43,7 +43,7 @@
       source <(fzf --zsh) #fzf
       
       #opencode
-      export PATH=/Users/dims/.opencode/bin:$PATH
+      export PATH=$HOME/.opencode/bin:$PATH
 
 
       # ======================================

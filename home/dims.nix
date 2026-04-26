@@ -10,7 +10,7 @@
 
   home = {
     username = "dims";
-    homeDirectory = "/Users/dims";
+    # homeDirectory is set per-host in hosts/*/default.nix
 
     # WARNING: DO NOT CHANGE THIS
     stateVersion = "24.11";
