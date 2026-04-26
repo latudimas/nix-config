@@ -21,6 +21,10 @@
     "dims"
   ];
 
+  # Binary cache — get public key from: https://app.cachix.org/cache/dims-nix
+  nix.settings.extra-substituters = [ "https://dims-nix.cachix.org" ];
+  nix.settings.extra-trusted-public-keys = [ "dims-nix.cachix.org-1:42IUG0D/t5x5liUzsGzn0UJDfbJ86eO34cJeDkwqLlk=" ];
+
   # Set zsh as default shell
   environment.shells = [ pkgs.zsh ];
   users.users.dims.shell = pkgs.zsh;
