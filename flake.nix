@@ -2,11 +2,7 @@
   description = "Dims' multi-device nix config";
 
   inputs = {
-    # Unstable channel for dev machines
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
-    # Stable channel for servers (24.11)
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
 
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
@@ -20,7 +16,7 @@
   };
 
   outputs =
-    { self, nix-darwin, nixpkgs, nixpkgs-stable, home-manager, ... }:
+    { self, nix-darwin, nixpkgs, home-manager, ... }:
     {
       # macOS — nix-darwin + home-manager
       darwinConfigurations.smol = nix-darwin.lib.darwinSystem {
@@ -39,7 +35,7 @@
 
       # VPS — home-manager standalone (minimal packages)
       homeConfigurations."vps" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs-stable.legacyPackages."x86_64-linux";
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
         modules = [ ./hosts/vps ];
       };
     };
