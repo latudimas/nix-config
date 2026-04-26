@@ -1,17 +1,18 @@
 {
-  description = "Example nix-darwin system flake";
+  description = "Dims' multi-device nix config";
 
   inputs = {
-    # Core package collection - unstable channel for latest packages 
+    # Unstable channel for dev machines
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    # Darwin system configuration manager
+    # Stable channel for servers (24.11)
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Home manager
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,33 +20,27 @@
   };
 
   outputs =
+    { self, nix-darwin, nixpkgs, nixpkgs-stable, home-manager, ... }:
     {
-      self,
-      nix-darwin,
-      nixpkgs,
-      home-manager,
-    }:
-    {
-      darwinConfigurations."smol" = nix-darwin.lib.darwinSystem {
+      # macOS — nix-darwin + home-manager
+      darwinConfigurations.smol = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
-          # System config from separate files
-          # ./darwin-configuration.nix # old config
-          ./hosts/darwin # new config
-
-          # Home-manager configuration
+          ./hosts/smol
           home-manager.darwinModules.home-manager
-          {
-            users.users.dims.home = "/Users/dims";
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              backupFileExtension = "hm-backup";
-              # users.dims = import ./home.nix; # old config
-              users.dims = import ./home/dims.nix; # new config
-            };
-          }
         ];
+      };
+
+      # WSL — home-manager standalone (full config)
+      homeConfigurations."dims-work" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
+        modules = [ ./hosts/dims-work ];
+      };
+
+      # VPS — home-manager standalone (minimal packages)
+      homeConfigurations."vps" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs-stable.legacyPackages."x86_64-linux";
+        modules = [ ./hosts/vps ];
       };
     };
 }
