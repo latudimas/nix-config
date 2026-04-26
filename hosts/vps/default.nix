@@ -13,6 +13,7 @@
   home.stateVersion = "24.11";
   home.homeDirectory = "/home/dims";
 
+  nixpkgs.config.allowUnfree = true;
   nix.package = pkgs.nix;
 
   # Binary cache — get public key from: https://app.cachix.org/cache/dims-nix
