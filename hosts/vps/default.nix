@@ -6,6 +6,8 @@
     ../../modules/shell/zsh.nix
   ];
 
+  programs.home-manager.enable = true;
+
   home.packages = with pkgs; [
     neovim
   ];

@@ -78,6 +78,19 @@ nix run home-manager -- switch --flake .#dims-work
 home-manager switch --flake ~/.config/nix-config#dims-work
 ```
 
+> **Why `nix run` first?** `home-manager` isn't installed yet on a fresh machine. `nix run` downloads and executes it temporarily so it can install itself permanently via `programs.home-manager.enable = true` in the flake. After that first bootstrap, the `home-manager` binary is in your PATH.
+
+> **Set zsh as default shell:**
+> Nix-installed zsh isn't in `/etc/shells` by default. Run as root first:
+> ```bash
+> echo "/home/dims/.nix-profile/bin/zsh" >> /etc/shells
+> ```
+> Then as `dims`:
+> ```bash
+> chsh -s $(which zsh)
+> ```
+> Log out and back in. This changes your login shell in `/etc/passwd` — home-manager alone cannot do this on non-NixOS Linux.
+
 ---
 
 ### vps (Debian)
@@ -109,6 +122,19 @@ nix run home-manager -- switch --flake .#vps
 ```bash
 home-manager switch --flake ~/.config/nix-config#vps
 ```
+
+> **Why `nix run` first?** `home-manager` isn't installed yet on a fresh machine. `nix run` downloads and executes it temporarily so it can install itself permanently via `programs.home-manager.enable = true` in the flake. After that first bootstrap, the `home-manager` binary is in your PATH.
+
+> **Set zsh as default shell:**
+> Nix-installed zsh isn't in `/etc/shells` by default. Run as root first:
+> ```bash
+> echo "/home/dims/.nix-profile/bin/zsh" >> /etc/shells
+> ```
+> Then as `dims`:
+> ```bash
+> chsh -s $(which zsh)
+> ```
+> Log out and back in. This changes your login shell in `/etc/passwd` — home-manager alone cannot do this on non-NixOS Linux.
 
 ---
 
