@@ -1,19 +1,15 @@
 name: Build & Cache
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # Dry run on PRs — evaluates all flake outputs without building
+  # Dry run — evaluates all flake outputs without building
   check:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -23,9 +19,8 @@ jobs:
       - name: Flake check (no build)
         run: nix flake check --no-build
 
-  # Full build + cache on push to main
+  # Full build + cache
   build-linux:
-    if: github.event_name == 'push'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -45,7 +40,6 @@ jobs:
           nix build .#homeConfigurations.vps.activationPackage --no-link
 
   build-macos:
-    if: github.event_name == 'push'
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
