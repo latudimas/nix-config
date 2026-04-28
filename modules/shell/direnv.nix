@@ -6,30 +6,17 @@
     enableZshIntegration = true;
     # enableNushellIntegration = true;
 
-    # stdlib = ''
-    #   # Layout for Python projects
-    #   layout_python() {
-    #     local python=''${1:-python3}
-    #     export VIRTUAL_ENV="$PWD/.direnv/python-venv"
-    #
-    #     if [[ ! -d $VIRTUAL_ENV ]]; then
-    #       $python -m venv "$VIRTUAL_ENV"
-    #     fi
-    #
-    #     source "$VIRTUAL_ENV/bin/activate"
-    #   }
-    #
-    #   # Layout for Node.js projects
-    #   layout_node() {
-    #     export NODE_PATH="$PWD/node_modules"
-    #     PATH_add node_modules/.bin
-    #   }
-    #
-    #   # Layout for Go projects
-    #   layout_go() {
-    #     export GOPATH="$PWD/.direnv/go"
-    #     PATH_add "$GOPATH/bin"
-    #   }
-    # '';
+    stdlib = ''
+      # Restores the user's login shell after nix/devenv environments
+      # override $SHELL with bash (comes from Nix stdenv).
+      # Usage: call restore_shell in .envrc after use devenv / use flake
+      restore_shell() {
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+          export SHELL="$(dscl . -read /Users/$USER UserShell 2>/dev/null | awk '{print $2}')"
+        else
+          export SHELL="$(getent passwd $USER | cut -d: -f7)"
+        fi
+      }
+    '';
   };
 }
