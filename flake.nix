@@ -1,8 +1,12 @@
 {
-  description = "Dims' multi-device nix config";
+  description = "Dims' multi-device nix config (dendritic pattern PoC)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    # The two pillars of the dendritic pattern:
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
 
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
@@ -20,40 +24,9 @@
     };
   };
 
+  # The entire flake is assembled by flake-parts from every *.nix file under
+  # ./modules. `import-tree` discovers and imports them all — no manual lists.
   outputs =
-    { self, nix-darwin, nixpkgs, home-manager, devenv, ... }:
-    let
-      overlay-devenv = final: prev: {
-        devenv = devenv.packages.${prev.system}.devenv;
-      };
-    in
-    {
-      # macOS — nix-darwin + home-manager
-      darwinConfigurations.smol = nix-darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        modules = [
-          { nixpkgs.overlays = [ overlay-devenv ]; }
-          ./hosts/smol
-          home-manager.darwinModules.home-manager
-        ];
-      };
-
-      # WSL — home-manager standalone (full config)
-      homeConfigurations."dims-work" = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          overlays = [ overlay-devenv ];
-        };
-        modules = [ ./hosts/dims-work ];
-      };
-
-      # VPS — home-manager standalone (minimal packages)
-      homeConfigurations."vps" = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          overlays = [ overlay-devenv ];
-        };
-        modules = [ ./hosts/vps ];
-      };
-    };
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }
