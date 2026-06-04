@@ -1,4 +1,5 @@
-# Aspect: zsh + starship prompt.
+# Aspect: zsh login shell + starship prompt. (See modules/home/base.nix for how
+# aspects work.) Vi mode, history, a GitHub-sourced plugin, and aliases.
 {
   flake.modules.homeManager.zsh =
     { pkgs, lib, ... }:
@@ -6,14 +7,17 @@
       programs.zsh = {
         enable = true;
         enableCompletion = true;
-        autosuggestion.enable = true;
-        syntaxHighlighting.enable = true;
+        autosuggestion.enable = true; # fish-like "ghost text" suggestions
+        syntaxHighlighting.enable = true; # colorize the command line as you type
 
+        # initContent is appended verbatim to ~/.zshrc — raw zsh for anything
+        # without a dedicated home-manager option (keybinds, setopts, functions).
         initContent = ''
           # ======================================
           # Enable Vi mode
           # ======================================
           bindkey -v
+
 
           # ======================================
           # Better history searching with arrow keys
@@ -25,6 +29,7 @@
           bindkey "^[[A" up-line-or-beginning-search
           bindkey "^[[B" down-line-or-beginning-search
 
+
           # ======================================
           # Additional zsh setting
           # ======================================
@@ -34,6 +39,7 @@
           setopt HIST_SAVE_NO_DUPS   # Don't save duplicates
           setopt SHARE_HISTORY       # Share history between sessions
 
+
           # ======================================
           # CLI tools extra setup
           # ======================================
@@ -41,6 +47,7 @@
 
           #opencode
           export PATH=$HOME/.opencode/bin:$PATH
+
 
           # ======================================
           # Welcome message function
@@ -82,10 +89,12 @@
           path = "$HOME/.zsh_history";
           save = 10000;
           ignoreDups = true;
-          share = true;
+          share = true; # share history live across open terminals
           extended = true;
         };
 
+        # Install a zsh plugin straight from GitHub. Pinning rev + sha256 keeps
+        # the fetch reproducible; bump sha256 whenever you change the rev.
         plugins = [
           {
             name = "zsh-nix-shell";
@@ -99,16 +108,18 @@
           }
         ];
 
+        # `lib.mkForce` replaces the whole alias set rather than merging — it
+        # wins over any aliases set by other modules or program defaults.
         shellAliases = lib.mkForce {
           # Navigation
           ".." = "cd ..";
           "..." = "cd ../..";
 
           # List directories
-          ls = "eza";
-          ll = "eza -l --icons";
-          la = "eza -la --icons";
-          lt = "eza -T";
+          ls = "eza"; # Replace ls with eza
+          ll = "eza -l --icons"; # List in long format
+          la = "eza -la --icons"; # List all files
+          lt = "eza -T"; # Tree view
 
           # Git shortcuts
           ga = "git add";
@@ -140,6 +151,7 @@
         };
       };
 
+      # starship — the cross-shell prompt; writes ~/.config/starship.toml for you.
       programs.starship = {
         enable = true;
         settings = {

@@ -1,15 +1,17 @@
-# Aspect: tmux.
+# Aspect: tmux terminal multiplexer. (See modules/home/base.nix for how aspects
+# work.) Typed options below become ~/.config/tmux/tmux.conf lines; everything
+# else goes in `extraConfig` as raw tmux syntax.
 {
   flake.modules.homeManager.tmux =
     { pkgs, ... }:
     {
       programs.tmux = {
         enable = true;
-        shell = "${pkgs.zsh}/bin/zsh";
+        shell = "${pkgs.zsh}/bin/zsh"; # shell launched in new panes
         terminal = "screen-256color";
-        escapeTime = 0;
-        baseIndex = 1;
-        keyMode = "vi";
+        escapeTime = 0; # no delay after Esc (important for vi mode)
+        baseIndex = 1; # number windows/panes from 1, not 0
+        keyMode = "vi"; # vi keys in copy mode
         customPaneNavigationAndResize = true;
         historyLimit = 10000;
 
@@ -51,8 +53,9 @@
           setw -g window-status-style fg=white
         '';
 
+        # Plugins (managed by home-manager, no plugin manager needed).
         plugins = with pkgs; [
-          tmuxPlugins.vim-tmux-navigator
+          tmuxPlugins.vim-tmux-navigator # seamless ctrl-h/j/k/l between vim & tmux
         ];
       };
     };

@@ -1,5 +1,6 @@
-# Aspect: nushell (alternative shell). Defined but not enabled by any profile —
+# Aspect: nushell (a structured-data shell). Defined but NOT in any profile —
 # swap `hm.zsh` for `hm.nushell` in a profile in modules/hosts.nix to use it.
+# `envFile.text` becomes env.nu and `configFile.text` becomes config.nu.
 {
   flake.modules.homeManager.nushell =
     { pkgs, lib, ... }:
@@ -7,6 +8,7 @@
       programs.nushell = {
         enable = true;
 
+        # env.nu — environment setup (runs first).
         envFile.text = ''
           # Android Studio bundled JDK (for running ./gradlew)
           $env.JAVA_HOME = "/Applications/Android Studio.app/Contents/jbr/Contents/Home"
@@ -25,6 +27,7 @@
           )
         '';
 
+        # config.nu — interactive settings, keybindings, custom commands.
         configFile.text = ''
           $env.config = {
             show_banner: false
@@ -66,8 +69,41 @@
             mkdir $dir
             cd $dir
           }
+
+          # Welcome message
+          def get_greeting [] {
+            let hour = (date now | format date "%H" | into int)
+            if $hour < 12 {
+              "Good morning"
+            } else if $hour < 18 {
+              "Good afternoon"
+            } else {
+              "Good evening"
+            }
+          }
+
+          def print_welcome [] {
+            let greeting = (get_greeting)
+            let message = $"($greeting), ($env.USER)! 👻"
+            let box_width = 36
+            let border = ("─" | fill -c "─" -w $box_width)
+            let msg_len = ($message | str length)
+            let total_pad = $box_width - $msg_len
+            let left_pad = ($total_pad // 2)
+            let right_pad = ($total_pad - $left_pad)
+            let left_spaces = (" " | fill -c " " -w $left_pad)
+            let right_spaces = (" " | fill -c " " -w $right_pad)
+
+            print ""
+            print $"╭($border)╮"
+            print $"│($left_spaces)($message)($right_spaces) │"
+            print $"╰($border)╯"
+          }
+
+          print_welcome
         '';
 
+        # Aliases (git/ls ones are commented out so nushell's built-ins shine).
         shellAliases = {
           ".." = "cd ..";
           "..." = "cd ../..";
@@ -79,8 +115,11 @@
         };
       };
 
+      # nix-your-shell: drops you back into nushell after `nix develop`/`nix shell`
+      # (the nushell equivalent of the zsh-nix-shell plugin).
       home.packages = [ pkgs.nix-your-shell ];
 
+      # starship prompt — nushell integration enabled.
       programs.starship = {
         enable = true;
         enableNushellIntegration = true;
@@ -97,6 +136,7 @@
         };
       };
 
+      # carapace — completions for many CLIs inside nushell.
       programs.carapace = {
         enable = true;
         enableNushellIntegration = true;
