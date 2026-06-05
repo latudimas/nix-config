@@ -68,6 +68,7 @@ in
     modules = [
       { nixpkgs.overlays = [ overlay-devenv ]; }
       darwin.base
+      darwin.kitty # ← system half of the "kitty + font" feature
       home-manager.darwinModules.home-manager
       {
         home-manager = {
@@ -76,7 +77,7 @@ in
           backupFileExtension = "hm-backup";
           extraSpecialArgs = { inherit inputs; };
           users.dims = {
-            imports = fullHome; # turn on the full profile for this user
+            imports = fullHome ++ [ hm.kitty ]; # full profile + Mac-only kitty (user half)
             home.homeDirectory = "/Users/dims";
             # Mac mini: Homebrew PostgreSQL 18 on PATH.
             home.sessionPath = [ "/opt/homebrew/opt/postgresql@18/bin" ];
