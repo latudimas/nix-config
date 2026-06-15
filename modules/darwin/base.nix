@@ -12,7 +12,7 @@
       # nix-darwin defaults baseline; bump only when release notes say so.
       system.stateVersion = 5;
 
-      # Must match the host's `system` in modules/hosts.nix.
+      # Sole source of truth for the platform (hosts.nix passes no `system`).
       nixpkgs.hostPlatform = "aarch64-darwin";
 
       # Permit packages with non-free licenses.
@@ -24,17 +24,10 @@
         "flakes"
       ];
 
-      # Users allowed to configure binary caches (for devenv/cachix below).
+      # Users allowed to configure binary caches (see modules/nix-cache.nix).
       nix.settings.trusted-users = [
         "root"
         "dims"
-      ];
-
-      # Personal binary cache — get the key from:
-      # https://app.cachix.org/cache/dims-nix
-      nix.settings.extra-substituters = [ "https://dims-nix.cachix.org" ];
-      nix.settings.extra-trusted-public-keys = [
-        "dims-nix.cachix.org-1:42IUG0D/t5x5liUzsGzn0UJDfbJ86eO34cJeDkwqLlk="
       ];
 
       # Make zsh a known login shell and dims' default shell.

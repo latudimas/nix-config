@@ -38,6 +38,7 @@ jobs:
         run: |
           nix build .#homeConfigurations.dims-work.activationPackage --no-link
           nix build .#homeConfigurations.vps.activationPackage --no-link
+          nix build .#nixosConfigurations.dims-wsl.config.system.build.toplevel --no-link
 
   build-macos:
     runs-on: macos-14

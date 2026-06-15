@@ -13,9 +13,8 @@
       programs.git = {
         enable = true;
 
-        # Identity stamped on your commits.
-        settings.user.name = "latudimas";
-        settings.user.email = "riswandha.ld@gmail.com";
+        # Commit identity lives in modules/hosts.nix (gitIdentity), so a work
+        # machine can use a different name/email without touching this aspect.
 
         lfs.enable = true; # track large binaries via git-lfs
 

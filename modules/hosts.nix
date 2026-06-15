@@ -15,20 +15,25 @@
 let
   inherit (inputs) nixpkgs home-manager nix-darwin;
 
-  # devenv overlay, shared by every host. Dendritic style: just a let-binding,
-  # no specialArgs gymnastics needed.
-  overlay-devenv = final: prev: {
-    devenv = inputs.devenv.packages.${prev.system}.devenv;
-  };
-
   # Shorthands for the registered aspect modules.
   hm = config.flake.modules.homeManager;
   darwin = config.flake.modules.darwin;
+  nixos = config.flake.modules.nixos;
+
+  # Git commit identity. Kept here (not in modules/home/git.nix) so a work
+  # machine can swap in a different name/email without touching the aspect.
+  gitIdentity = {
+    programs.git.settings.user = {
+      name = "latudimas";
+      email = "riswandha.ld@gmail.com";
+    };
+  };
 
   # PROFILES = which aspects a host turns on. Editing these lists is how you
   # add/remove features per machine.
   fullHome = [
     hm.base
+    gitIdentity
     hm.nodejs
     hm.cli
     hm.git
@@ -37,13 +42,17 @@ let
     hm.direnv
     hm.aiTools
     hm.helix
+    hm.yazi
   ];
   minimalHome = [
     hm.base
+    gitIdentity
     hm.git
     hm.cli
     hm.zsh
     hm.linuxNix
+    hm.cache # binary cache; needs nix.package from hm.linuxNix
+    hm.yazi
   ];
 
   # Builder for the STANDALONE home-manager (Linux) hosts. Standalone HM gets a
@@ -53,7 +62,6 @@ let
     home-manager.lib.homeManagerConfiguration {
       pkgs = import nixpkgs {
         inherit system;
-        overlays = [ overlay-devenv ];
         config.allowUnfree = true;
       };
       extraSpecialArgs = { inherit inputs; };
@@ -62,12 +70,12 @@ let
 in
 {
   # ---- smol: macOS (nix-darwin + home-manager) ----
+  # No `system` argument: darwin.base sets nixpkgs.hostPlatform.
   flake.darwinConfigurations.smol = nix-darwin.lib.darwinSystem {
-    system = "aarch64-darwin";
     specialArgs = { inherit inputs; };
     modules = [
-      { nixpkgs.overlays = [ overlay-devenv ]; }
       darwin.base
+      darwin.cache # dims-nix binary cache (system half)
       darwin.kitty # ← system half of the "kitty + font" feature
       home-manager.darwinModules.home-manager
       {
@@ -87,11 +95,36 @@ in
     ];
   };
 
+  # ---- dims-wsl: NixOS on WSL (NixOS + home-manager module) ----
+  # Same fullHome profile as dims-work, plus Java 21. Unlike dims-work (standalone
+  # HM), NixOS owns the system layer here: nix.conf and the binary cache come
+  # from nixos.cache, so the hm.linuxNix / hm.cache pair isn't needed here.
+  # Apply inside WSL with: sudo nixos-rebuild switch --flake .#dims-wsl
+  flake.nixosConfigurations.dims-wsl = nixpkgs.lib.nixosSystem {
+    specialArgs = { inherit inputs; };
+    modules = [
+      inputs.nixos-wsl.nixosModules.default # provides the `wsl.*` options
+      nixos.wsl
+      nixos.cache
+      home-manager.nixosModules.home-manager
+      {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          backupFileExtension = "hm-backup";
+          extraSpecialArgs = { inherit inputs; };
+          users.dims.imports = fullHome ++ [ hm.java ];
+        };
+      }
+    ];
+  };
+
   # ---- dims-work: WSL (standalone home-manager, full) ----
   flake.homeConfigurations."dims-work" = mkHome {
     system = "x86_64-linux";
     modules = fullHome ++ [
       hm.linuxNix
+      hm.cache # binary cache; needs nix.package from hm.linuxNix
       { home.homeDirectory = "/home/dims"; }
     ];
   };
