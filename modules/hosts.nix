@@ -67,6 +67,13 @@ let
       extraSpecialArgs = { inherit inputs; };
       inherit modules;
     };
+
+  # Server-only extras shared by all VPS hosts.
+  vpsExtras =
+    { pkgs, ... }:
+    {
+      home.packages = [ pkgs.neovim ]; # one server-only extra
+    };
 in
 {
   # ---- smol: macOS (nix-darwin + home-manager) ----
@@ -129,17 +136,27 @@ in
     ];
   };
 
-  # ---- vps: standalone home-manager (minimal) ----
-  flake.homeConfigurations."vps" = mkHome {
+  # ---- vps-dims: original VPS (username: dims) ----
+  flake.homeConfigurations."vps-dims" = mkHome {
     system = "x86_64-linux";
     modules = minimalHome ++ [
-      (
-        { pkgs, ... }:
-        {
-          home.homeDirectory = "/home/dims";
-          home.packages = [ pkgs.neovim ]; # one server-only extra
-        }
-      )
+      vpsExtras
+      {
+        home.username = "dims";
+        home.homeDirectory = "/home/dims";
+      }
+    ];
+  };
+
+  # ---- vps-dudidam: new VPS (username length restriction) ----
+  flake.homeConfigurations."vps-dudidam" = mkHome {
+    system = "x86_64-linux";
+    modules = minimalHome ++ [
+      vpsExtras
+      {
+        home.username = "dudidam";
+        home.homeDirectory = "/home/dudidam";
+      }
     ];
   };
 }

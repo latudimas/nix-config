@@ -7,6 +7,9 @@
 
 set -e
 
+# Real user even when run via sudo.
+TARGET_USER="${SUDO_USER:-$USER}"
+
 CACHIX_CACHE="dims-nix"
 CACHIX_URL="https://${CACHIX_CACHE}.cachix.org"
 # Get your public key from: https://app.cachix.org/cache/dims-nix
@@ -15,11 +18,11 @@ CACHIX_KEY="dims-nix.cachix.org-1:42IUG0D/t5x5liUzsGzn0UJDfbJ86eO34cJeDkwqLlk="
 NIX_CONF="/etc/nix/nix.conf"
 
 echo "==> Checking trusted-users..."
-if grep -q "trusted-users.*dims" "$NIX_CONF" 2>/dev/null; then
-  echo "    dims is already in trusted-users, skipping."
+if grep -q "trusted-users.*$TARGET_USER" "$NIX_CONF" 2>/dev/null; then
+  echo "    $TARGET_USER is already in trusted-users, skipping."
 else
-  echo "    Adding dims to trusted-users..."
-  sudo bash -c "echo 'trusted-users = root dims' >> $NIX_CONF"
+  echo "    Adding $TARGET_USER to trusted-users..."
+  sudo bash -c "echo 'trusted-users = root $TARGET_USER' >> \"$NIX_CONF\""
   echo "    Done."
 fi
 

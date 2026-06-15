@@ -13,11 +13,13 @@
 #     1. make a file that sets `flake.modules.homeManager.<yourname> = { ... };`
 #     2. add `hm.<yourname>` to a profile in modules/hosts.nix.
 {
-  flake.modules.homeManager.base = {
+  flake.modules.homeManager.base = { lib, ... }: {
     # Let home-manager manage itself (gives you the `home-manager` command).
     programs.home-manager.enable = true;
 
-    home.username = "dims";
+    # Default username for hosts that don't override it. Per-host entries in
+    # modules/hosts.nix can set a different username normally.
+    home.username = lib.mkDefault "dims";
 
     # The home-manager release this profile targets.
     # WARNING: DO NOT CHANGE after first install.

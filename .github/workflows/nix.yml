@@ -37,7 +37,8 @@ jobs:
       - name: Build Linux hosts
         run: |
           nix build .#homeConfigurations.dims-work.activationPackage --no-link
-          nix build .#homeConfigurations.vps.activationPackage --no-link
+          nix build .#homeConfigurations.vps-dims.activationPackage --no-link
+          nix build .#homeConfigurations.vps-dudidam.activationPackage --no-link
           nix build .#nixosConfigurations.dims-wsl.config.system.build.toplevel --no-link
 
   build-macos:
