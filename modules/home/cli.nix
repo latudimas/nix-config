@@ -14,6 +14,7 @@
         fd # friendly `find`
         fzf # fuzzy finder
         ripgrep # fast `grep` (rg)
+        tree-sitter # parser generator tool
         lazygit # terminal git UI
         mkcert # local development certificates
         rar # rar archive utilities

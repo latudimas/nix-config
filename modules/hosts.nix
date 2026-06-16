@@ -24,7 +24,7 @@ let
   # machine can swap in a different name/email without touching the aspect.
   gitIdentity = {
     programs.git.settings.user = {
-      name = "latudimas";
+      name = "Riswandha Latu Dimas";
       email = "riswandha.ld@gmail.com";
     };
   };

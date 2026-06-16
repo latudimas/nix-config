@@ -8,7 +8,7 @@
       programs.tmux = {
         enable = true;
         shell = "${pkgs.zsh}/bin/zsh"; # shell launched in new panes
-        terminal = "screen-256color";
+        terminal = "tmux-256color";
         escapeTime = 0; # no delay after Esc (important for vi mode)
         baseIndex = 1; # number windows/panes from 1, not 0
         keyMode = "vi"; # vi keys in copy mode
@@ -16,15 +16,21 @@
         historyLimit = 10000;
 
         extraConfig = ''
+          # dynamic renumber
+          set -g renumber-windows on
+
           # Enable mouse support
           set -g mouse on
+
+          # for yazi
+          set -g allow-passthrough on
 
           # Extended keys support (for Shift+Enter in Claude Code, OpenCode, etc.)
           set -s extended-keys always
           set -as terminal-features 'xterm*:extkeys'
 
           # Better colors
-          set -ga terminal-overrides ",*256col*:Tc"
+          set -ga terminal-features ",*:RGB"
 
           # Vi mode selection and copy
           bind-key -T copy-mode-vi v send-keys -X begin-selection
