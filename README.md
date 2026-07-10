@@ -1,6 +1,6 @@
 # nix-config
 
-Multi-device Nix configuration for macOS, NixOS-WSL, and Debian/Ubuntu VPSes.
+Multi-device Nix configuration for macOS, bare-metal NixOS, NixOS-WSL, and Debian/Ubuntu VPSes.
 Built with Nix flakes, [flake-parts](https://flake.parts/), [import-tree](https://github.com/vic/import-tree), [nix-darwin](https://github.com/LnL7/nix-darwin), and [home-manager](https://github.com/nix-community/home-manager).
 
 ## Hosts
@@ -8,6 +8,7 @@ Built with Nix flakes, [flake-parts](https://flake.parts/), [import-tree](https:
 | Host | OS | Type | Apply command |
 |---|---|---|---|
 | `smol` | macOS (Apple Silicon) | nix-darwin + home-manager | `darwin-rebuild switch --flake .` |
+| `dims-laptop` | NixOS (HP laptop, bare metal) | NixOS + home-manager | `sudo nixos-rebuild switch --flake .#dims-laptop` |
 | `dims-wsl` | NixOS on WSL | NixOS + home-manager | `sudo nixos-rebuild switch --flake .#dims-wsl` |
 | `dims-work` | Ubuntu WSL (x86_64) | home-manager standalone | `home-manager switch --flake .#dims-work` |
 | `vps-dims` | Debian/Ubuntu VPS | home-manager standalone | `home-manager switch --flake .#vps-dims` |

@@ -36,6 +36,16 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Declarative disk partitioning for the bare-metal laptop (dims-laptop).
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Per-model hardware quirks (HP ProBook 440 G5 profile for dims-laptop).
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # devenv is intentionally NOT an input: the CLI comes from nixpkgs
     # (modules/home/cli.nix); each project pins its own devenv anyway.
   };

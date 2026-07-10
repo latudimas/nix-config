@@ -126,6 +126,38 @@ in
     ];
   };
 
+  # ---- dims-laptop: HP laptop (bare-metal NixOS + home-manager module) ----
+  # Same shape as dims-wsl, plus the real-hardware aspects: laptopDisko owns
+  # the disk layout (LUKS + btrfs, defined declaratively — see issue #4),
+  # laptopHardware the initrd/microcode bits, laptop everything else (boot,
+  # network, Hyprland, audio).
+  # Install (from ISO): see notes/SETUP-NIXOS-LAPTOP.md
+  # Apply (on laptop):  sudo nixos-rebuild switch --flake .#dims-laptop
+  flake.nixosConfigurations.dims-laptop = nixpkgs.lib.nixosSystem {
+    specialArgs = { inherit inputs; };
+    modules = [
+      inputs.disko.nixosModules.disko # provides the `disko.*` options
+      # TODO: uncomment once the model is confirmed as a ProBook 440 G5
+      # (`sudo dmidecode -s system-product-name` on the laptop):
+      # inputs.nixos-hardware.nixosModules.hp-probook-440G5
+      nixos.laptop
+      nixos.laptopDisko
+      nixos.laptopHardware
+      nixos.cache
+      home-manager.nixosModules.home-manager
+      {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          backupFileExtension = "hm-backup";
+          extraSpecialArgs = { inherit inputs; };
+          # Full profile + kitty user half (font is installed by nixos.laptop).
+          users.dims.imports = fullHome ++ [ hm.kitty ];
+        };
+      }
+    ];
+  };
+
   # ---- dims-work: WSL (standalone home-manager, full) ----
   flake.homeConfigurations."dims-work" = mkHome {
     system = "x86_64-linux";
