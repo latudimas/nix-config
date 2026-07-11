@@ -13,7 +13,8 @@ discussion. Everything below runs on the **laptop**, booted from the installer I
   We do NOT use the click-through Calamares installer on it (it would bypass
   the disko layout) — we only want the live desktop for easy wifi (GUI network
   icon) and a browser, then run the install from a terminal. The minimal ISO
-  works too; then wifi is joined via `wpa_cli` as in step 1.
+  works too; then wifi is joined via `wpa_cli` as in step 1 — see the
+  minimal-ISO alternative section near the bottom for what else differs.
 
 ## 1. Get online + gather facts
 
@@ -73,8 +74,10 @@ reboot
 
 ## 5. First boot
 
-1. Enter the LUKS passphrase, log in as `dims` via tuigreet (set a password
-   first: log in as root on a TTY, `passwd dims`).
+1. Enter the LUKS passphrase, log in as `dims` via tuigreet with the initial
+   password `changeme` (set declaratively in laptop.nix), then **immediately
+   run `passwd`** in a terminal to replace it. The change sticks — the
+   initial password only applies when the user is first created.
 2. tuigreet launches Hyprland. Default keybinds: `SUPER+Q` terminal (kitty),
    `SUPER+R` launcher (wofi), `SUPER+M` exit.
 3. Clone this repo so future rebuilds are local:
@@ -108,10 +111,43 @@ boot passphrase), builds the system on the laptop (`--build-on-remote`
 because the Mac is aarch64-darwin and can't build x86_64-linux), installs,
 and reboots. It uses the local checkout, so nothing needs to be pushed first.
 
+Unlike `nixos-install`, this path never prompts for a root password — the
+`initialHashedPassword` on the `dims` user in laptop.nix is the only login
+that works after reboot (see issue #6). Don't remove it before installing.
+
 Note: this path installs with the generic module list in
 `laptop-hardware.nix` as-is (fine for this machine). After first boot, run
 step 3's `nixos-generate-config --no-filesystems` on the running system and
 reconcile at leisure.
+
+## Alternative: installing from the minimal ISO
+
+Steps 2–5 are identical — the minimal ISO only changes what the live
+environment looks like. Differences from the graphical ISO:
+
+- You land on a **TTY**, auto-logged-in as the `nixos` user (`sudo -i` for a
+  root shell). There is no browser: keep this guide open on another device,
+  or SSH in from the Mac (below) and copy-paste from there.
+- No GUI network icon — join wifi with the `wpa_cli` flow from step 1.
+- US keyboard layout by default; `sudo loadkeys <layout>` if needed.
+
+Recommended: drive the install over SSH from the Mac instead of typing at
+the laptop console. sshd already runs on the ISO; it only needs the live
+`nixos` user to have a password:
+
+```bash
+# on the laptop (after wifi is up)
+passwd            # any temporary password for the live `nixos` user
+ip a              # note the laptop's IP
+
+# on the Mac
+ssh nixos@<laptop-ip>
+```
+
+From that SSH session run steps 2–4 exactly as written (`sudo` needs no
+password on the ISO). Note these are the same two laptop-side commands the
+nixos-anywhere path needs — if you're on the minimal ISO anyway, that fully
+automated path is the natural choice.
 
 ## Post-install checklist
 
