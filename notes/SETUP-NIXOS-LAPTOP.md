@@ -1,4 +1,4 @@
-# Installing NixOS on the HP laptop (dims-laptop)
+# Installing NixOS on the HP ProBook 430 G5 (dims-laptop)
 
 Fresh install using the declarative disk layout in `modules/nixos/laptop-disko.nix`
 (disko: GPT → 1G ESP + LUKS2 → btrfs subvolumes). See issue #4 for the design
@@ -18,9 +18,6 @@ discussion. Everything below runs on the **laptop**, booted from the installer I
 sudo systemctl start wpa_supplicant
 wpa_cli   # > add_network / set_network 0 ssid "..." / set_network 0 psk "..." / enable_network 0
 
-# exact model — decides whether to uncomment the nixos-hardware import in hosts.nix
-sudo dmidecode -s system-product-name
-
 # disk device — MUST match `device` in modules/nixos/laptop-disko.nix
 lsblk
 # NVMe SSD → /dev/nvme0n1 (current value) ; SATA SSD → /dev/sda (edit the file!)
@@ -29,7 +26,7 @@ lsblk
 free -h
 ```
 
-If anything differs (model / device path / RAM), fix it in the repo, push, and
+If anything differs (device path / RAM), fix it in the repo, push, and
 continue — the install below pulls the flake straight from GitHub.
 
 ## 2. Partition + format (DESTROYS THE DISK)
@@ -79,8 +76,6 @@ reboot
 
 ## Post-install checklist
 
-- [ ] Model confirmed → uncomment `inputs.nixos-hardware.nixosModules.hp-probook-440G5`
-      in `modules/hosts.nix` (if it's really a 440 G5), rebuild
 - [ ] `laptop-hardware.nix` placeholder replaced with generated module lists
 - [ ] btrfs compression working: `sudo compsize /` (add `compsize` ad hoc via `nix shell nixpkgs#compsize`)
 - [ ] Write `modules/home/hyprland.nix` aspect once the Hyprland config

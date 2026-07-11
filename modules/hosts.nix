@@ -137,9 +137,18 @@ in
     specialArgs = { inherit inputs; };
     modules = [
       inputs.disko.nixosModules.disko # provides the `disko.*` options
-      # TODO: uncomment once the model is confirmed as a ProBook 440 G5
-      # (`sudo dmidecode -s system-product-name` on the laptop):
-      # inputs.nixos-hardware.nixosModules.hp-probook-440G5
+      # Model confirmed: ProBook 430 G5 (8th-gen Intel, UHD 620 graphics).
+      # nixos-hardware has no 430G5 profile, so we import the same common
+      # profiles its 440G5 sibling wraps (the per-generation kaby-lake
+      # profiles are deprecated upstream in favor of these):
+      inputs.nixos-hardware.nixosModules.common-cpu-intel # microcode + i915/VA-API stack
+      inputs.nixos-hardware.nixosModules.common-pc-laptop # TLP power management
+      inputs.nixos-hardware.nixosModules.common-pc-ssd # periodic fstrim
+      {
+        # UHD 620 is GPU Gen 9.5: the OpenCL runtime needs the legacy
+        # variant (the common-cpu-intel default targets Gen12+).
+        hardware.intelgpu.computeRuntime = "legacy";
+      }
       nixos.laptop
       nixos.laptopDisko
       nixos.laptopHardware

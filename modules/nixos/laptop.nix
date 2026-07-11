@@ -17,6 +17,10 @@
       networking.networkmanager.enable = true;
       hardware.bluetooth.enable = true;
 
+      # Intel thermal daemon — prevents the aggressive thermal throttling
+      # thin HPs are known for (nixos-hardware's HP profiles enable it too).
+      services.thermald.enable = true;
+
       time.timeZone = "Asia/Jakarta";
       i18n.defaultLocale = "en_US.UTF-8";
 
