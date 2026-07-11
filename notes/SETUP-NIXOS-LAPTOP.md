@@ -7,9 +7,13 @@ discussion. Everything below runs on the **laptop**, booted from the installer I
 ## 0. Before wiping anything
 
 - Back up whatever on the laptop still matters.
-- Download the minimal NixOS ISO and write it to a USB stick, boot it
-  (F9 = boot menu on most HPs of this era; disable Secure Boot in BIOS if
-  the ISO refuses to boot).
+- Download the **graphical** NixOS ISO (GNOME or Plasma — either is fine) and
+  write it to a USB stick, boot it (F9 = boot menu on most HPs of this era;
+  disable Secure Boot in BIOS if the ISO refuses to boot).
+  We do NOT use the click-through Calamares installer on it (it would bypass
+  the disko layout) — we only want the live desktop for easy wifi (GUI network
+  icon) and a browser, then run the install from a terminal. The minimal ISO
+  works too; then wifi is joined via `wpa_cli` as in step 1.
 
 ## 1. Get online + gather facts
 
