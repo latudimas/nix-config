@@ -82,7 +82,7 @@
                   # (btrfs requirement for swapfiles). No hibernation.
                   "@swap" = {
                     mountpoint = "/.swapvol";
-                    swap.swapfile.size = "8G"; # TODO(install day): match to RAM if desired
+                    swap.swapfile.size = "8G"; # 16GB RAM + no hibernation → 8G is plenty
                   };
                 };
               };

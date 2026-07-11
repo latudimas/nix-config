@@ -69,6 +69,15 @@
         interval = "monthly";
       };
 
+      # 256GB disk: automate the weekly routine from notes/GARBAGE-COLLECTION.md.
+      # --delete-older-than (not -d) keeps a week of generations for rollback.
+      nix.gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 7d";
+      };
+      nix.optimise.automatic = true; # deduplicate the store (hardlinks)
+
       nixpkgs.hostPlatform = "x86_64-linux";
       nixpkgs.config.allowUnfree = true;
 

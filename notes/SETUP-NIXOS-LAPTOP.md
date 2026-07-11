@@ -21,13 +21,17 @@ wpa_cli   # > add_network / set_network 0 ssid "..." / set_network 0 psk "..." /
 # disk device — MUST match `device` in modules/nixos/laptop-disko.nix
 lsblk
 # NVMe SSD → /dev/nvme0n1 (current value) ; SATA SSD → /dev/sda (edit the file!)
-
-# RAM — adjust the 8G swapfile in laptop-disko.nix if you want swap ≈ RAM
-free -h
 ```
 
-If anything differs (device path / RAM), fix it in the repo, push, and
-continue — the install below pulls the flake straight from GitHub.
+Tip: this can be checked from Windows beforehand — PowerShell:
+`Get-PhysicalDisk | Select FriendlyName,BusType` (`NVMe` → current value is
+right; `SATA` → edit laptop-disko.nix to `/dev/sda`).
+
+If the device path differs, fix it in the repo, push, and continue — the
+install below pulls the flake straight from GitHub.
+
+Hardware already confirmed (issue #4): i5-8250U, 16GB RAM (8G swapfile is
+final), 256GB SSD, UHD 620.
 
 ## 2. Partition + format (DESTROYS THE DISK)
 
