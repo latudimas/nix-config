@@ -126,6 +126,47 @@ in
     ];
   };
 
+  # ---- dims-laptop: HP laptop (bare-metal NixOS + home-manager module) ----
+  # Same shape as dims-wsl, plus the real-hardware aspects: laptopDisko owns
+  # the disk layout (LUKS + btrfs, defined declaratively — see issue #4),
+  # laptopHardware the initrd/microcode bits, laptop everything else (boot,
+  # network, Hyprland, audio).
+  # Install (from ISO): see notes/SETUP-NIXOS-LAPTOP.md
+  # Apply (on laptop):  sudo nixos-rebuild switch --flake .#dims-laptop
+  flake.nixosConfigurations.dims-laptop = nixpkgs.lib.nixosSystem {
+    specialArgs = { inherit inputs; };
+    modules = [
+      inputs.disko.nixosModules.disko # provides the `disko.*` options
+      # Model confirmed: ProBook 430 G5 (8th-gen Intel, UHD 620 graphics).
+      # nixos-hardware has no 430G5 profile, so we import the same common
+      # profiles its 440G5 sibling wraps (the per-generation kaby-lake
+      # profiles are deprecated upstream in favor of these):
+      inputs.nixos-hardware.nixosModules.common-cpu-intel # microcode + i915/VA-API stack
+      inputs.nixos-hardware.nixosModules.common-pc-laptop # TLP power management
+      inputs.nixos-hardware.nixosModules.common-pc-ssd # periodic fstrim
+      {
+        # UHD 620 is GPU Gen 9.5: the OpenCL runtime needs the legacy
+        # variant (the common-cpu-intel default targets Gen12+).
+        hardware.intelgpu.computeRuntime = "legacy";
+      }
+      nixos.laptop
+      nixos.laptopDisko
+      nixos.laptopHardware
+      nixos.cache
+      home-manager.nixosModules.home-manager
+      {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          backupFileExtension = "hm-backup";
+          extraSpecialArgs = { inherit inputs; };
+          # Full profile + kitty user half (font is installed by nixos.laptop).
+          users.dims.imports = fullHome ++ [ hm.kitty ];
+        };
+      }
+    ];
+  };
+
   # ---- dims-work: WSL (standalone home-manager, full) ----
   flake.homeConfigurations."dims-work" = mkHome {
     system = "x86_64-linux";
