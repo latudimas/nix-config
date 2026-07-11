@@ -31,7 +31,8 @@ If the device path differs, fix it in the repo, push, and continue — the
 install below pulls the flake straight from GitHub.
 
 Hardware already confirmed (issue #4): i5-8250U, 16GB RAM (8G swapfile is
-final), 256GB SSD, UHD 620.
+final), WD PC SN520 256GB **NVMe** SSD (→ `/dev/nvme0n1`, the current value),
+UHD 620. The `lsblk` check above is just a final sanity pass.
 
 ## 2. Partition + format (DESTROYS THE DISK)
 
