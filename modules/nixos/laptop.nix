@@ -103,6 +103,12 @@
           "wheel" # sudo
           "networkmanager" # manage wifi without root
         ];
+        # First-boot password ("changeme") so BOTH install paths end in a
+        # loginable system — nixos-anywhere never prompts for one, and root
+        # is locked (issue #6). With mutableUsers (the default), this only
+        # applies when the user is first created; running `passwd` on first
+        # boot replaces it permanently. Regenerate: mkpasswd -m sha-512
+        initialHashedPassword = "$6$.TS9HoGQETeHG6M5$TfOS4C.H3zoh5mnUY28y7x8cXBfIWI5Z98Ne/Fk4Rt99uVtMgFASn/oV9T2/HeyiKJJH0BPL0t/VpgPb0pOEr.";
       };
 
       # The NixOS release this machine was first installed with.

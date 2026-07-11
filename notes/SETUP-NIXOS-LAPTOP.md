@@ -73,8 +73,10 @@ reboot
 
 ## 5. First boot
 
-1. Enter the LUKS passphrase, log in as `dims` via tuigreet (set a password
-   first: log in as root on a TTY, `passwd dims`).
+1. Enter the LUKS passphrase, log in as `dims` via tuigreet with the initial
+   password `changeme` (set declaratively in laptop.nix), then **immediately
+   run `passwd`** in a terminal to replace it. The change sticks — the
+   initial password only applies when the user is first created.
 2. tuigreet launches Hyprland. Default keybinds: `SUPER+Q` terminal (kitty),
    `SUPER+R` launcher (wofi), `SUPER+M` exit.
 3. Clone this repo so future rebuilds are local:
@@ -107,6 +109,10 @@ nixos-anywhere SSHes in, runs disko (asks the LUKS passphrase — this is the
 boot passphrase), builds the system on the laptop (`--build-on-remote`
 because the Mac is aarch64-darwin and can't build x86_64-linux), installs,
 and reboots. It uses the local checkout, so nothing needs to be pushed first.
+
+Unlike `nixos-install`, this path never prompts for a root password — the
+`initialHashedPassword` on the `dims` user in laptop.nix is the only login
+that works after reboot (see issue #6). Don't remove it before installing.
 
 Note: this path installs with the generic module list in
 `laptop-hardware.nix` as-is (fine for this machine). After first boot, run
