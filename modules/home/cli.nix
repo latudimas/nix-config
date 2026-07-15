@@ -19,6 +19,7 @@
         mkcert # local development certificates
         rar # rar archive utilities
         devenv # per-project development environments
+        neovim # terminal editor; config lives in ~/.config/nvim
       ];
 
       # zoxide = a smarter `cd` that learns your most-used directories (`z foo`).

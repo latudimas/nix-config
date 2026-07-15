@@ -24,5 +24,11 @@
     # The home-manager release this profile targets.
     # WARNING: DO NOT CHANGE after first install.
     home.stateVersion = "24.11";
+
+    # Use Neovim as the default terminal editor everywhere.
+    home.sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
   };
 }

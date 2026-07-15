@@ -68,12 +68,6 @@ let
       inherit modules;
     };
 
-  # Server-only extras shared by all VPS hosts.
-  vpsExtras =
-    { pkgs, ... }:
-    {
-      home.packages = [ pkgs.neovim ]; # one server-only extra
-    };
 in
 {
   # ---- smol: macOS (nix-darwin + home-manager) ----
@@ -181,7 +175,6 @@ in
   flake.homeConfigurations."vps-dims" = mkHome {
     system = "x86_64-linux";
     modules = minimalHome ++ [
-      vpsExtras
       {
         home.username = "dims";
         home.homeDirectory = "/home/dims";
@@ -193,7 +186,6 @@ in
   flake.homeConfigurations."vps-dudidam" = mkHome {
     system = "x86_64-linux";
     modules = minimalHome ++ [
-      vpsExtras
       {
         home.username = "dudidam";
         home.homeDirectory = "/home/dudidam";
