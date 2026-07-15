@@ -27,6 +27,7 @@
 
           # Extended keys support (for Shift+Enter in Claude Code, OpenCode, etc.)
           set -s extended-keys always
+          set -s extended-keys-format csi-u
           set -as terminal-features 'xterm*:extkeys'
 
           # Better colors

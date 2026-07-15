@@ -30,6 +30,14 @@
         "dims"
       ];
 
+      # Automatic store cleanup (weekly, keep 7 days of generations).
+      nix.gc = {
+        automatic = true;
+        interval = [{ Weekday = 0; Hour = 3; Minute = 0; }];
+        options = "--delete-older-than 7d";
+      };
+      nix.optimise.automatic = true;
+
       # Make zsh a known login shell and dims' default shell.
       environment.shells = [ pkgs.zsh ];
       users.users.dims.shell = pkgs.zsh;

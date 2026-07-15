@@ -61,6 +61,7 @@
         wl-clipboard
         grim
         slurp # screenshots: grim + slurp
+        neovim
       ];
 
       # Monthly whole-filesystem checksum pass (btrfs bit-rot detection).
