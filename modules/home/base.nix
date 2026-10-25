@@ -25,6 +25,12 @@
     # WARNING: DO NOT CHANGE after first install.
     home.stateVersion = "24.11";
 
+    # User-local bin dirs (pipx, Homebrew npm globals, etc.).
+    home.sessionPath = [
+      "$HOME/.local/bin"
+      "/opt/homebrew/bin"
+    ];
+
     # Use Neovim as the default terminal editor everywhere.
     home.sessionVariables = {
       EDITOR = "nvim";
