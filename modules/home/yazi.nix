@@ -7,7 +7,6 @@
       enable = true;
       shellWrapperName = "y"; # defaults to "yy" on home.stateVersion < 26.05
       enableZshIntegration = true;
-      enableNushellIntegration = true;
     };
   };
 }

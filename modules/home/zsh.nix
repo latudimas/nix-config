@@ -38,6 +38,7 @@
           setopt HIST_FIND_NO_DUPS   # Don't display duplicates when searching
           setopt HIST_SAVE_NO_DUPS   # Don't save duplicates
           setopt SHARE_HISTORY       # Share history between sessions
+          setopt HIST_IGNORE_SPACE   # Commands starting with a space aren't saved (secrets)
 
 
           # ======================================
