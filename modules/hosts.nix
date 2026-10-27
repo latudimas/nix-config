@@ -86,7 +86,7 @@ in
           backupFileExtension = "hm-backup";
           extraSpecialArgs = { inherit inputs; };
           users.dims = {
-            imports = fullHome ++ [ hm.kitty ]; # full profile + Mac-only kitty (user half)
+            imports = fullHome ++ [ hm.kitty hm.rust ]; # full profile + Mac-only kitty (user half) + Rust
             home.homeDirectory = "/Users/dims";
             # Mac mini: Homebrew PostgreSQL 18 on PATH.
             home.sessionPath = [ "/opt/homebrew/opt/postgresql@18/bin" ];
