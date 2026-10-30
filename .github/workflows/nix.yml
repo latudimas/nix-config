@@ -3,58 +3,29 @@ name: Build & Cache
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # Dry run — evaluates all flake outputs without building
-  check:
+  build-vps-dudidam:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
-      - uses: DeterminateSystems/nix-installer-action@v22
+      - uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
 
-      - name: Flake check (no build)
-        run: nix flake check --no-build
+      - uses: DeterminateSystems/magic-nix-cache-action@565684385bcd71bad329742eefe8d12f2e765b39 # v13
 
-  # Full build + cache
-  build-linux:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: DeterminateSystems/nix-installer-action@v22
-
-      - uses: DeterminateSystems/magic-nix-cache-action@v13
-
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@ad2ddac53f961de1989924296a1f236fcfbaa4fc # v15
         with:
           name: dims-nix
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Build Linux hosts
-        run: |
-          nix build .#homeConfigurations.dims-work.activationPackage --no-link
-          nix build .#homeConfigurations.vps-dims.activationPackage --no-link
-          nix build .#homeConfigurations.vps-dudidam.activationPackage --no-link
-          nix build .#nixosConfigurations.dims-wsl.config.system.build.toplevel --no-link
-
-  build-macos:
-    runs-on: macos-14
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: DeterminateSystems/nix-installer-action@v22
-
-      - uses: DeterminateSystems/magic-nix-cache-action@v13
-
-      - uses: cachix/cachix-action@v15
-        with:
-          name: dims-nix
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-      - name: Build macOS host
-        run: |
-          nix build .#darwinConfigurations.smol.system --no-link
+      - name: Build vps-dudidam (biznet-gio)
+        run: nix build .#homeConfigurations.vps-dudidam.activationPackage --no-link
