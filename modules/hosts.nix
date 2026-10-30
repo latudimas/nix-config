@@ -182,10 +182,11 @@ in
     ];
   };
 
-  # ---- vps-dudidam: new VPS (username length restriction) ----
+  # ---- vps-dudidam: biznet-gio VPS (username length restriction) ----
   flake.homeConfigurations."vps-dudidam" = mkHome {
     system = "x86_64-linux";
     modules = minimalHome ++ [
+      hm.nodejs
       {
         home.username = "dudidam";
         home.homeDirectory = "/home/dudidam";
