@@ -17,6 +17,13 @@ CACHIX_KEY="dims-nix.cachix.org-1:42IUG0D/t5x5liUzsGzn0UJDfbJ86eO34cJeDkwqLlk="
 
 NIX_CONF="/etc/nix/nix.conf"
 
+# Determinate Nix regenerates nix.conf ("do not modify!") and includes
+# nix.custom.conf for user settings, so write there instead.
+if grep -q "DETERMINATE NIX CONFIG" "$NIX_CONF" 2>/dev/null; then
+  NIX_CONF="/etc/nix/nix.custom.conf"
+  echo "==> Determinate Nix detected, using $NIX_CONF"
+fi
+
 echo "==> Checking trusted-users..."
 if grep -q "trusted-users.*$TARGET_USER" "$NIX_CONF" 2>/dev/null; then
   echo "    $TARGET_USER is already in trusted-users, skipping."
