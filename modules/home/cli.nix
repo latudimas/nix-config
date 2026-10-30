@@ -18,7 +18,6 @@
         lazygit # terminal git UI
         mkcert # local development certificates
         rar # rar archive utilities
-        devenv # per-project development environments
         neovim # terminal editor; config lives in ~/.config/nvim
         age # file encryption (age-keygen makes your key pair)
         sops # edit encrypted secrets files; uses age keys

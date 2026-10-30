@@ -113,7 +113,7 @@ Beyond your own Cachix cache, substituters are also used for:
 
 - **`cache.nixos.org`** — default, all official nixpkgs binaries
 - **`nix-community.cachix.org`** — community packages (home-manager, neovim nightly, etc.)
-- **`devenv.cachix.org`** — pre-built devenv environments (we use `devenv` in cli.nix)
+- **`devenv.cachix.org`** — pre-built devenv environments (not used here; projects use plain `flake.nix` dev shells)
 - **Team/org caches** — share compiled derivations across a team so everyone benefits from CI builds
 - **`nixpkgs-cuda-maintainers.cachix.org`** — GPU/CUDA packages that take hours to compile
 

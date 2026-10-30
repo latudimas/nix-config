@@ -46,8 +46,6 @@
       url = "github:NixOS/nixos-hardware";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # devenv is intentionally NOT an input: the CLI comes from nixpkgs
-    # (modules/home/cli.nix); each project pins its own devenv anyway.
   };
 
   # mkFlake builds the flake from a single module. `import-tree ./modules` IS
